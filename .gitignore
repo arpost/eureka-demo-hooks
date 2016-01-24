@@ -1,2 +1,3 @@
 hooks/activation/pre/i2b2/*
 hooks/activation/pre/tmp/*
+hooks/activation/pre/etc/*
