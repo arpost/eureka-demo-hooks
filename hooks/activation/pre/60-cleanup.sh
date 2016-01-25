@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-rm -r "${0%/*}"/tmp/*
+rm -rf "${0%/*}"/tmp/*
 
