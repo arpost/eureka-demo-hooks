@@ -14,6 +14,7 @@ function ek_log {
 }
 
 function ek_execute_sql {
+    ek_log "Executing query $1"
     typeset user_at=$ORACLE_USER@$ORACLE_SID
     ek_log "Connecting to Oracle as $user_at"
     sqlplus -s $user_at/$ORACLE_PSWD<<SQL

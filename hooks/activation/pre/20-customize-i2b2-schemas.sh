@@ -3,11 +3,12 @@
 cd "${0%/*}"
 
 . etc/config.sh
+. tmp/config
 
 # PM TABLES
 
 ORACLE_USER="$I2B2_PM_USER"
-ORACLE_PASS="$I2B2_PM_PWD"
+ORACLE_PSWD="$I2B2_PM_PWD"
 
 PM_USER_DATA_STMT=$(cat <<EOF
 INSERT INTO PM_USER_DATA 
@@ -24,11 +25,12 @@ STATUS_CD
 '${1}',
 '${2}',
 '${3}',
-'undefined',
+null,
 sysdate,
 sysdate,
 'Eureka admin',
 'A');
+COMMIT;
 EOF
 )
 ek_execute_sql "$PM_USER_DATA_STMT"
@@ -57,29 +59,38 @@ sysdate,
 sysdate,
 'Eureka admin',
 'A'
-)
+);
+COMMIT;
 EOF
 )
-ek_execute_sql "$PM_PROJECT_DATA_STMT"
+#ek_execute_sql "$PM_PROJECT_DATA_STMT"
 
 USER_ROLES=( 'DATA_AGG' 'DATA_DEID' 'DATA_LDS' 'DATA_OBFSC' 'DATA_PROT' 'USER' )
 
 for i in "${USER_ROLES[@]}"
 do
 PM_PROJECT_USER_ROLE_STMT=$(cat <<EOF
-  ek_execute_sql "INSERT INTO PM_PROJECT_USER_ROLES (PROJECT_ID,USER_ID,USER_ROLE_CD,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) VALUES ('EurekaProject${NEXT_USER_NUM}','${1}','${i}',sysdate,sysdate,'Eureka admin','A')"
+INSERT INTO PM_PROJECT_USER_ROLES (PROJECT_ID,USER_ID,USER_ROLE_CD,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) VALUES ('I2B2_17_PRJ${NEXT_USER_NUM}','${1}','${i}',sysdate,sysdate,'Eureka admin','A');
+COMMIT;
 EOF
 )
   ek_execute_sql "$PM_PROJECT_USER_ROLE_STMT"
 done
 
-ek_execute_sql "Insert into PM_PROJECT_USER_ROLES (PROJECT_ID,USER_ID,USER_ROLE_CD,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) values ('EurekaProject${NEXT_USER_NUM}','OBFSC_SERVICE_ACCOUNT','DATA_OBFSC',sysdate,sysdate,'Eureka admin','A')"
-ek_execute_sql "Insert into PM_PROJECT_USER_ROLES (PROJECT_ID,USER_ID,USER_ROLE_CD,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) values ('EurekaProject${NEXT_USER_NUM}','OBFSC_SERVICE_ACCOUNT','USER',sysdate,sysdate,'Eureka admin','A')"
+SERVICE_INSERT_STMT=$(cat <<EOF
+Insert into PM_PROJECT_USER_ROLES (PROJECT_ID,USER_ID,USER_ROLE_CD,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) values ('I2B2_17_PRJ${NEXT_USER_NUM}','AGG_SERVICE_ACCOUNT','DATA_OBFSC',sysdate,sysdate,'Eureka admin','A');
+Insert into PM_PROJECT_USER_ROLES (PROJECT_ID,USER_ID,USER_ROLE_CD,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) values ('I2B2_17_PRJ${NEXT_USER_NUM}','AGG_SERVICE_ACCOUNT','USER',sysdate,sysdate,'Eureka admin','A');
+
+COMMIT;
+EOF
+)
+
+ek_execute_sql "$SERVICE_INSERT_STMT"
 
 # METADATA TABLES
 
 ORACLE_USER="I2B2_17_PRJ_${NEXT_USER_NUM}_METADATA"
-ORACLE_PASS="${EK_META_PWD}"
+ORACLE_PSWD="${EK_META_PWD}"
 
 DDL=$(cat <<EOF
 create table EUREKA 
@@ -106,12 +117,19 @@ import_date timestamp,
 sourcesystem_cd varchar2(50), 
 valuetype_cd varchar2(50)
 );
+COMMIT;
 EOF
 )
 
-ek_execute_sql "$DDL"
+#ek_execute_sql "$DDL"
 
-ek_execute_sql "DELETE FROM TABLE_ACCESS"
+DELETE_STMT=$(cat <<EOF
+DELETE FROM TABLE_ACCESS;
+COMMIT;
+EOF
+)
+
+#ek_execute_sql "$DELETE_STMT"
 
 INSERT_STMT=$(cat <<EOF
 INSERT INTO TABLE_ACCESS
@@ -160,9 +178,10 @@ null,
 null,
 null,
 null,
-null)
+null);
+COMMIT;
 EOF
 )
 
-ek_execute_sql "$INSERT_STMT"
+#ek_execute_sql "$INSERT_STMT"
 
