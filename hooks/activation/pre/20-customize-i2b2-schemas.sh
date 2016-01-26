@@ -1,3 +1,13 @@
+#!/usr/bin/env bash
+
+cd "${0%/*}"
+
+. etc/config.sh
+
+ORACLE_USER="I2B2_17_PRJ_${NEXT_USER_NUM}_METADATA"
+ORACLE_PASS="${EK_META_PWD}"
+
+SQL=$(cat <<EOF
 create table cardiovascularregistry 
 ( 
 c_hlevel decimal(22) not null, 
@@ -22,3 +32,8 @@ import_date timestamp,
 sourcesystem_cd varchar2(50), 
 valuetype_cd varchar2(50)
 );
+EOF
+)
+
+ek_execute_sql "$SQL"
+
