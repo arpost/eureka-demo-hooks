@@ -1,3 +1,5 @@
 hooks/activation/pre/i2b2/*
 hooks/activation/pre/tmp/*
 hooks/activation/pre/etc/config_local.sh
+hooks/activation/pre/etc/last-user-num
+hooks/activation/pre/log/*

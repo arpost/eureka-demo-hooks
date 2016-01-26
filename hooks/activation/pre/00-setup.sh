@@ -2,13 +2,15 @@
 
 cd "${0%/*}"
 
-if [ ! -f tmp ] ; then
+. etc/config.sh
+
+if [ ! -d tmp ] ; then
     mkdir tmp
 fi
 
 DYNAMIC_CONFIG_FILE=tmp/config
 
-randpw(){ < /dev/urandom tr -dc "[:alpha:]" | head -c1; < /dev/urandom tr -dc "_[:alnum:]" | head -c${1:-15};echo;}
+randpw(){ < /dev/urandom LC_CTYPE=C tr -dc _A-Z-a-z-0-9 | head -c${1:-16};echo;}
 
 echo EK_DATA_PWD="$(randpw)" > $DYNAMIC_CONFIG_FILE
 echo EK_META_PWD="$(randpw)" >> $DYNAMIC_CONFIG_FILE

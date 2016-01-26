@@ -5,7 +5,7 @@ source "${0%/*}/etc/config_local.sh"
 
 LOG_FILE="${0%/*}/log/hook.log"
 
-if [ ! -f "${0%/*}/log" ] ; then
+if [ ! -d "${0%/*}/log" ] ; then
     mkdir "${0%/*}/log"
 fi
 
