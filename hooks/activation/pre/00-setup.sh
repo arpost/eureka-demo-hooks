@@ -23,4 +23,4 @@ echo $NEXT_USER_NUM > etc/last-user-num
 ORACLE_USER="${EK_BACKEND_USER}"
 ORACLE_PASS="${EK_BACKEND_PWD}"
 
-ek_execute_sql "INSERT INTO USERS VALUES ()"
+ek_execute_sql "INSERT INTO USERS VALUES (USER_SEQ.NEXTVAL, '$1')"
