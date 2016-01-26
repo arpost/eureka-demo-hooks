@@ -2,11 +2,15 @@
 
 cd "${0%/*}"
 
-SC_CONTENTS << EOF
+. etc/config.sh
+
+EK_USERNAME=${1//[.@]/_}
+
+SC_CONTENTS=$(cat <<EOF
 [edu.emory.cci.aiw.cvrg.eureka.etl.dsb.EurekaDataSourceBackend]
 dataSourceBackendId=AIW
-databaseName = mark_braunstein_cc_gatech_edu
-dataFileDirectoryName = mark_braunstein_cc_gatech_edu
+databaseName = $EK_USERNAME
+dataFileDirectoryName = $EK_USERNAME
 mimetypes = application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 sampleUrl = ../docs/sample.xlsx
 required = true
@@ -18,6 +22,12 @@ units = ABSOLUTE
 
 [org.protempa.backend.asb.java.JavaAlgorithmBackend]
 EOF
+)
 
 echo $SC_CONTENTS > "$EK_SOURCECONFIG_DIR"/"$EK_USERNAME"
 
+
+ORACLE_USER="${EK_BACKEND_USER}"
+ORACLE_PASS="${EK_BACKEND_PWD}"
+
+ek_execute_sql "INSERT INTO SOURCECONFIGS VALUES ()"
