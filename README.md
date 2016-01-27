@@ -24,4 +24,5 @@ Each script takes three arguments:
 * Eureka username
 * Eureka user full name
 * Eureka encrypted password
+
 The `30-create-ds.xml`, `40-create-sourceconfig.sh` and `50-create-destconfig.sh` scripts write to JBoss' deployment directory, the `/etc/eureka/sourceconfig` and `/etc/eureka/destconfig` directory, respectively, and must be run as a user with write privileges.
