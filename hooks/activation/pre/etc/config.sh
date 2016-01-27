@@ -1,11 +1,14 @@
 EK_SOURCECONFIG_DIR="/etc/eureka/sourceconfig"
 EK_DESTCONFIG_DIR="/etc/eureka/destconfig"
+ORACLE_PATH=/usr/lib/oracle/11.2/client64/bin
+LD_LIBRARY_PATH=/usr/lib/oracle/11.2/client64/lib:$LD_LIBRARY_PATH
+TNS_ADMIN=/etc/oracle-instantclient
 
 source "${0%/*}/etc/config_local.sh"
 
 LOG_FILE="${0%/*}/log/hook.log"
 
-if [ ! -d "${0%/*}/log" ] ; then
+if [ ! -f "${0%/*}/log" ] ; then
     mkdir "${0%/*}/log"
 fi
 
@@ -14,10 +17,9 @@ function ek_log {
 }
 
 function ek_execute_sql {
-    ek_log "Executing query $1"
     typeset user_at=$ORACLE_USER@$ORACLE_SID
     ek_log "Connecting to Oracle as $user_at"
-    sqlplus -s $user_at/$ORACLE_PSWD<<SQL
+    $ORACLE_PATH/sqlplus -s $user_at/$ORACLE_PSWD<<SQL
 $1
 SQL
     typeset error_code=$?
