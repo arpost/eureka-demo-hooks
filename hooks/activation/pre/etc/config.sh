@@ -28,12 +28,8 @@ SQL
 
 function ek_die {
     typeset msg="$NACOR_SCRIPT_NAME failed: $1."               
-    nacor_log "$msg"
+    ek_log "$msg"
     echo $msg 1>&2
-    $NACOR_DW_DIR/dw_notice_dw "$msg"
-    if [ ! -f $NACOR_HOLD_UPLOAD ] ; then
-        $NACOR_BIN_DIR/hold_create
-    fi
     exit 1    
 }
 
