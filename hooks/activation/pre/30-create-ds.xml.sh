@@ -81,4 +81,4 @@ DS_CONTENTS=$(cat <<EOF
 EOF
 )
 
-echo $DS_CONTENTS > "$JBOSS_HOME/standalone/deployments/I2B2_17_PRJ${NEXT_USER_NUM}-ds.xml"
+echo "$DS_CONTENTS" > "$JBOSS_HOME/standalone/deployments/I2B2_17_PRJ${NEXT_USER_NUM}-ds.xml"
