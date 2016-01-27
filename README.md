@@ -13,6 +13,9 @@ EK_BACKEND_PWD=<eureka backend db password>
 I2B2_PM_USER=<i2b2 pm db user>
 I2B2_PM_PWD=<i2b2 pm db password>
 
+I2B2_HIVE_USER=<i2b2 hive db user>
+I2B2_HIVE_PWD=<i2b2 hive db password>
+
 ORACLE_SID=<oracle database SID>
 ```
 
