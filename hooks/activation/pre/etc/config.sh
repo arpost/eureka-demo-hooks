@@ -27,7 +27,7 @@ SQL
 }
 
 function ek_die {
-    typeset msg="$NACOR_SCRIPT_NAME failed: $1."               
+    typeset msg="Failed: $1."               
     ek_log "$msg"
     echo $msg 1>&2
     exit 1    
